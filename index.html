@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Мяч</title>
+</head>
+<body>
+<canvas id="canvas" width="500" height="500"></canvas>
+
+
+
+
+<script>
+
+var Ball = function (){
+	this.x = 100;
+	this.y = 100;
+	this.xSpeed = Math.random() * 4 -2;
+	this.ySpeed = Math.random() * 4 -2;
+};
+
+
+
+var circle = function (x, y, radius, fillCircle){
+	ctx.beginPath();
+	ctx.arc(x, y, radius, 0, Math.PI * 2, false);
+
+	ctx.fillStyle = "Orange";
+	ctx.strokeStyle = "Black";
+	ctx.lineWidth = 2;
+
+	if(fillCircle){
+		ctx.fill();
+	}else{
+		ctx.stroke();
+	}
+};
+
+
+
+
+Ball.prototype.draw = function (){
+	circle(this.x, this.y, 8, true);
+	circle(this.x, this.y, 8, false);
+	circle(this.x -5, this.y -11, 5, false);
+	circle(this.x +5, this.y -11, 5, false);
+	circle(this.x -2, this.y -1, 2, false);
+	circle(this.x +2, this.y -1, 2, false);
+
+};
+
+
+Ball.prototype.move = function (){
+	this.x += this.xSpeed;
+	this.y += this.ySpeed;
+};
+
+
+Ball.prototype.checkCollision = function (){
+	if (this.x < 0 || this.x > 500){
+		this.xSpeed = -this.xSpeed;
+	}
+	if (this.y < 0 || this.y > 500){
+		this.ySpeed = -this.ySpeed;
+	}
+};
+
+
+var canvas = document.getElementById("canvas");
+var ctx = canvas.getContext("2d");
+
+//----------------------------
+var balls = [];
+for(var i = 0; i < 111; i++){
+	balls[i] = new Ball();
+}
+//----------------------------
+
+
+
+setInterval(function (){
+	ctx.clearRect(0, 0, 500, 500);
+//----------------------------
+
+for(var i = 0; i < balls.length; i++){
+
+	balls[i].draw();
+	balls[i].move();
+	balls[i].checkCollision();
+}
+	ctx.strokeRect(0, 0, 500, 500);
+}, 30);
+
+
+</script>
+
+</body>
+</html>
